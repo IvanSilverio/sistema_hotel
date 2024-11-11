@@ -1,16 +1,13 @@
-index.html:
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Funcionários e Pagamentos</title>
+    <title>CRUD Funcionários</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- CRUD Funcionários -->
         <h2>Cadastro de Funcionários</h2>
         <form id="funcionarioForm">
             <input type="text" id="nome" placeholder="Nome do Funcionário" required>
@@ -27,27 +24,6 @@ index.html:
                 <th>CPF</th>
                 <th>Cargo</th>
                 <th>Telefone</th>
-                <th>Ações</th>
-            </tr>
-        </table>
-
-        <!-- CRUD Pagamentos -->
-        <h2>Registro de Pagamentos</h2>
-        <form id="pagamentoForm">
-            <input type="text" id="hospede" placeholder="Nome do Hóspede" required>
-            <input type="date" id="dataPagamento" required>
-            <input type="number" id="valorPago" placeholder="Valor Pago (R$)" required>
-            <input type="text" id="metodoPagamento" placeholder="Método de Pagamento" required>
-            <button type="submit">Adicionar Pagamento</button>
-        </form>
-
-        <h3>Lista de Pagamentos</h3>
-        <table id="pagamentoTable">
-            <tr>
-                <th>Nome do Hóspede</th>
-                <th>Data</th>
-                <th>Valor Pago</th>
-                <th>Método de Pagamento</th>
                 <th>Ações</th>
             </tr>
         </table>
