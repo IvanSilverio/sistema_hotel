@@ -1,0 +1,93 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+import time
+
+# Configuração do WebDriver
+service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service)
+
+# URL do arquivo HTML local
+url = "http://127.0.0.1:5500/funcionario_and_pagamento/index.html"
+driver.get(url)
+
+# Função para testar o CRUD de Funcionários
+def test_funcionario_crud():
+    # Adicionar Funcionário
+    driver.find_element(By.ID, "nome").send_keys("Carlos Silva")
+    driver.find_element(By.ID, "cpf").send_keys("12345678900")
+    driver.find_element(By.ID, "cargo").send_keys("Gerente")
+    driver.find_element(By.ID, "telefone").send_keys("(11) 91234-5678")
+    driver.find_element(By.CSS_SELECTOR, "#funcionarioForm button").click()
+    time.sleep(1)  # Aguardar um momento para visualizar o registro adicionado
+
+    # Verificar se o funcionário foi adicionado
+    funcionario_nome = driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]/td[1]").text
+    assert funcionario_nome == "Carlos Silva", "Erro ao adicionar funcionário"
+
+    # Editar Funcionário
+    driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]//button[text()='Editar']").click()
+    driver.find_element(By.ID, "nome").clear()
+    driver.find_element(By.ID, "nome").send_keys("Carlos Souza")
+    driver.find_element(By.CSS_SELECTOR, "#funcionarioForm button").click()
+    time.sleep(1)
+
+    # Verificar se o nome do funcionário foi editado
+    funcionario_nome_editado = driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]/td[1]").text
+    assert funcionario_nome_editado == "Carlos Souza", "Erro ao editar funcionário"
+
+    # Excluir Funcionário
+    driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]//button[text()='Excluir']").click()
+    time.sleep(1)
+
+    # Verificar se a tabela está vazia novamente
+    linhas_funcionarios = driver.find_elements(By.XPATH, "//table[@id='funcionarioTable']//tr")
+    assert len(linhas_funcionarios) == 1, "Erro ao excluir funcionário"
+
+# Função para testar o CRUD de Pagamentos
+def test_pagamento_crud():
+    # Adicionar Pagamento
+    driver.find_element(By.ID, "hospede").send_keys("Ana Maria")
+    driver.find_element(By.ID, "dataPagamento").send_keys("2023-10-20")
+    driver.find_element(By.ID, "valorPago").send_keys("250")
+    driver.find_element(By.ID, "metodoPagamento").send_keys("Cartão de Crédito")
+    driver.find_element(By.CSS_SELECTOR, "#pagamentoForm button").click()
+    time.sleep(1)
+
+    # Verificar se o pagamento foi adicionado
+    pagamento_hospede = driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]/td[1]").text
+    assert pagamento_hospede == "Ana Maria", "Erro ao adicionar pagamento"
+
+    # Editar Pagamento
+    driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]//button[text()='Editar']").click()
+    driver.find_element(By.ID, "hospede").clear()
+    driver.find_element(By.ID, "hospede").send_keys("Ana Clara")
+    driver.find_element(By.CSS_SELECTOR, "#pagamentoForm button").click()
+    time.sleep(1)
+
+    # Verificar se o nome do hóspede foi editado
+    pagamento_hospede_editado = driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]/td[1]").text
+    assert pagamento_hospede_editado == "Ana Clara", "Erro ao editar pagamento"
+
+    # Excluir Pagamento
+    driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]//button[text()='Excluir']").click()
+    time.sleep(1)
+
+    # Verificar se a tabela está vazia novamente
+    linhas_pagamentos = driver.find_elements(By.XPATH, "//table[@id='pagamentoTable']//tr")
+    assert len(linhas_pagamentos) == 1, "Erro ao excluir pagamento"
+
+# Executar os testes
+try:
+    print("Testando CRUD de Funcionários...")
+    test_funcionario_crud()
+    print("CRUD de Funcionários testado com sucesso.")
+
+    print("Testando CRUD de Pagamentos...")
+    test_pagamento_crud()
+    print("CRUD de Pagamentos testado com sucesso.")
+
+finally:
+    driver.quit()
