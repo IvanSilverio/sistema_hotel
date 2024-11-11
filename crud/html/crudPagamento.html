@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Pagamentos</title>
+    <link rel="stylesheet" href="pagamento.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de Pagamentos</h2>
+        <form id="pagamentoForm">
+            <input type="text" id="hospede" placeholder="Nome do Hóspede" required>
+            <input type="date" id="dataPagamento" required>
+            <input type="number" id="valorPago" placeholder="Valor Pago (R$)" required>
+            <input type="text" id="metodoPagamento" placeholder="Método de Pagamento" required>
+            <button type="submit">Adicionar Pagamento</button>
+        </form>
+
+        <h3>Lista de Pagamentos</h3>
+        <table id="pagamentoTable">
+            <tr>
+                <th>Nome do Hóspede</th>
+                <th>Data</th>
+                <th>Valor Pago</th>
+                <th>Método de Pagamento</th>
+                <th>Ações</th>
+            </tr>
+        </table>
+    </div>
+
+    <script src="pagamento.js"></script>
+</body>
+</html>
