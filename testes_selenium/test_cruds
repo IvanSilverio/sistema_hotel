@@ -1,93 +1,110 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
 # Configuração do WebDriver
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service)
+servico = Service(ChromeDriverManager().install())
+navegador = webdriver.Chrome(service=servico)
 
-# URL do arquivo HTML local
-url = "http://127.0.0.1:5500/funcionario_and_pagamento/index.html"
-driver.get(url)
+# Acessando o sistema
+navegador.get('http://127.0.0.1:5500/realese02/index.html')
+time.sleep(3)  # Aguardando o carregamento inicial
 
-# Função para testar o CRUD de Funcionários
-def test_funcionario_crud():
-    # Adicionar Funcionário
-    driver.find_element(By.ID, "nome").send_keys("Carlos Silva")
-    driver.find_element(By.ID, "cpf").send_keys("12345678900")
-    driver.find_element(By.ID, "cargo").send_keys("Gerente")
-    driver.find_element(By.ID, "telefone").send_keys("(11) 91234-5678")
-    driver.find_element(By.CSS_SELECTOR, "#funcionarioForm button").click()
-    time.sleep(1)  # Aguardar um momento para visualizar o registro adicionado
+# CRUD Funcionário
+navegador.find_element(By.XPATH, '/html/body/div[1]/nav/ul/li[1]/button').click()
+time.sleep(2)
 
-    # Verificar se o funcionário foi adicionado
-    funcionario_nome = driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]/td[1]").text
-    assert funcionario_nome == "Carlos Silva", "Erro ao adicionar funcionário"
+navegador.find_element(By.XPATH, '//*[@id="nomeFuncionario"]').send_keys("Maria Clara")
+navegador.find_element(By.XPATH, '//*[@id="cpfFuncionario"]').send_keys("98765432100")
+navegador.find_element(By.XPATH, '//*[@id="cargoFuncionario"]').send_keys("Atendente")
+navegador.find_element(By.XPATH, '//*[@id="telefoneFuncionario"]').send_keys("(21) 99876-5432")
+navegador.find_element(By.XPATH, '//*[@id="funcionarioForm"]/button').click()
+time.sleep(3)
 
-    # Editar Funcionário
-    driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]//button[text()='Editar']").click()
-    driver.find_element(By.ID, "nome").clear()
-    driver.find_element(By.ID, "nome").send_keys("Carlos Souza")
-    driver.find_element(By.CSS_SELECTOR, "#funcionarioForm button").click()
-    time.sleep(1)
+navegador.find_element(By.XPATH, '//*[@id="funcionarioTable"]/tr/td[5]/button[1]').click()  # Botão de editar
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="nomeFuncionario"]').clear()
+navegador.find_element(By.XPATH, '//*[@id="nomeFuncionario"]').send_keys("Clara Martins")
+navegador.find_element(By.XPATH, '//*[@id="funcionarioForm"]/button').click()
+time.sleep(3)
 
-    # Verificar se o nome do funcionário foi editado
-    funcionario_nome_editado = driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]/td[1]").text
-    assert funcionario_nome_editado == "Carlos Souza", "Erro ao editar funcionário"
+# Excluir Funcionário
+navegador.find_element(By.XPATH, '//*[@id="funcionarioTable"]/tr/td[5]/button[2]').click()  # Botão de excluir
+time.sleep(3)
 
-    # Excluir Funcionário
-    driver.find_element(By.XPATH, "//table[@id='funcionarioTable']//tr[2]//button[text()='Excluir']").click()
-    time.sleep(1)
 
-    # Verificar se a tabela está vazia novamente
-    linhas_funcionarios = driver.find_elements(By.XPATH, "//table[@id='funcionarioTable']//tr")
-    assert len(linhas_funcionarios) == 1, "Erro ao excluir funcionário"
 
-# Função para testar o CRUD de Pagamentos
-def test_pagamento_crud():
-    # Adicionar Pagamento
-    driver.find_element(By.ID, "hospede").send_keys("Ana Maria")
-    driver.find_element(By.ID, "dataPagamento").send_keys("2023-10-20")
-    driver.find_element(By.ID, "valorPago").send_keys("250")
-    driver.find_element(By.ID, "metodoPagamento").send_keys("Cartão de Crédito")
-    driver.find_element(By.CSS_SELECTOR, "#pagamentoForm button").click()
-    time.sleep(1)
+# CRUD Pagamento
+navegador.find_element(By.XPATH, '/html/body/div[1]/nav/ul/li[2]/button').click()
+time.sleep(2)
 
-    # Verificar se o pagamento foi adicionado
-    pagamento_hospede = driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]/td[1]").text
-    assert pagamento_hospede == "Ana Maria", "Erro ao adicionar pagamento"
+navegador.find_element(By.XPATH, '//*[@id="hospedePagamento"]').send_keys("Carlos Eduardi")
+navegador.find_element(By.XPATH, '//*[@id="valorPagamento"]').send_keys("1500")
+navegador.find_element(By.XPATH, '//*[@id="dataPagamento"]').send_keys("2024-11-20")
+navegador.find_element(By.XPATH, '//*[@id="metodoPagamento"]').send_keys("Transferência Bancária")
+navegador.find_element(By.XPATH, '//*[@id="pagamentoForm"]/button').click()
+time.sleep(3)
 
-    # Editar Pagamento
-    driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]//button[text()='Editar']").click()
-    driver.find_element(By.ID, "hospede").clear()
-    driver.find_element(By.ID, "hospede").send_keys("Ana Clara")
-    driver.find_element(By.CSS_SELECTOR, "#pagamentoForm button").click()
-    time.sleep(1)
+navegador.find_element(By.XPATH, '//*[@id="pagamentoTable"]/tr/td[5]/button[1]').click()  # Botão de editar
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="hospedePagamento"]').clear()
+navegador.find_element(By.XPATH, '//*[@id="hospedePagamento"]').send_keys("Carlos Eduardo")
+navegador.find_element(By.XPATH, '//*[@id="pagamentoForm"]/button').click()
+time.sleep(3)
 
-    # Verificar se o nome do hóspede foi editado
-    pagamento_hospede_editado = driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]/td[1]").text
-    assert pagamento_hospede_editado == "Ana Clara", "Erro ao editar pagamento"
+# Excluir Pagamento
+navegador.find_element(By.XPATH, '//*[@id="pagamentoTable"]/tr/td[5]/button[2]').click()  # Botão de excluir
+time.sleep(3)
 
-    # Excluir Pagamento
-    driver.find_element(By.XPATH, "//table[@id='pagamentoTable']//tr[2]//button[text()='Excluir']").click()
-    time.sleep(1)
 
-    # Verificar se a tabela está vazia novamente
-    linhas_pagamentos = driver.find_elements(By.XPATH, "//table[@id='pagamentoTable']//tr")
-    assert len(linhas_pagamentos) == 1, "Erro ao excluir pagamento"
+# CRUD Hóspede
+navegador.find_element(By.XPATH, '/html/body/div[1]/nav/ul/li[3]/button').click()
+time.sleep(2)
 
-# Executar os testes
-try:
-    print("Testando CRUD de Funcionários...")
-    test_funcionario_crud()
-    print("CRUD de Funcionários testado com sucesso.")
+navegador.find_element(By.XPATH, '//*[@id="nomeHospede"]').send_keys("Ana Pauls")
+navegador.find_element(By.XPATH, '//*[@id="nascimentoHospede"]').send_keys("1985-06-15")
+navegador.find_element(By.XPATH, '//*[@id="contatoHospede"]').send_keys("(11) 98765-4321")
+navegador.find_element(By.XPATH, '//*[@id="preferenciasHospede"]').send_keys("Andar alto")
+navegador.find_element(By.XPATH, '//*[@id="hospedesForm"]/button').click()
+time.sleep(3)
 
-    print("Testando CRUD de Pagamentos...")
-    test_pagamento_crud()
-    print("CRUD de Pagamentos testado com sucesso.")
+navegador.find_element(By.XPATH, '//*[@id="hospedesTable"]/tr/td[5]/button[1]').click()  # Botão de editar
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="nomeHospede"]').clear()
+navegador.find_element(By.XPATH, '//*[@id="nomeHospede"]').send_keys("Ana Paula")
+navegador.find_element(By.XPATH, '//*[@id="hospedesForm"]/button').click()
+time.sleep(3)
 
-finally:
-    driver.quit()
+# Excluir Pagamento
+navegador.find_element(By.XPATH, '//*[@id="hospedesTable"]/tr/td[5]/button[2]').click()  # Botão de excluir
+time.sleep(3)
+
+# CRUD Quarto
+navegador.find_element(By.XPATH, '/html/body/div[1]/nav/ul/li[4]/button').click()
+time.sleep(2)
+
+navegador.find_element(By.XPATH, '//*[@id="numeroQuarto"]').send_keys("102")
+navegador.find_element(By.XPATH, '//*[@id="tipoQuarto"]').send_keys("Suite Master")
+navegador.find_element(By.XPATH, '//*[@id="capacidadeQuarto"]').send_keys("4")
+navegador.find_element(By.XPATH, '//*[@id="precoQuarto"]').send_keys("450")
+navegador.find_element(By.XPATH, '//*[@id="statusQuarto"]').send_keys("Disponível")
+navegador.find_element(By.XPATH, '//*[@id="quartosForm"]/button').click()
+
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="quartosTable"]/tr/td[6]/button[1]').click()  # Botão de editar
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="numeroQuarto"]').clear()
+navegador.find_element(By.XPATH, '//*[@id="numeroQuarto"]').send_keys("101")
+navegador.find_element(By.XPATH, '//*[@id="quartosForm"]/button').click()
+time.sleep(3)
+
+# Excluir Quarto
+navegador.find_element(By.XPATH, '//*[@id="quartosTable"]/tr/td[6]/button[2]').click()  # Botão de excluir
+time.sleep(3)
+
+# Fechando o navegador
+navegador.quit()
