@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Hóspedes</title>
+    <link rel="stylesheet" href="hospedes.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Hóspedes</h1>
+        <form id="hospedesForm">
+            <input type="text" id="nomeHospede" placeholder="Nome do Hóspede" required>
+            <input type="date" id="dataNascimento" required>
+            <input type="tel" id="contatoHospede" placeholder="Contato (00) 00000-0000" required>
+            <input type="text" id="preferenciasHospede" placeholder="Preferências (opcional)">
+            <button type="submit">Adicionar Hóspede</button>
+        </form>
+        <h3>Lista de Hóspedes</h3>
+        <table id="hospedesTable">
+            <tr>
+                <th>Nome</th>
+                <th>Data de Nascimento</th>
+                <th>Contato</th>
+                <th>Preferências</th>
+                <th>Ações</th>
+            </tr>
+        </table>
+    </div>
+    <script src="hospedes.js"></script>
+</body>
+</html>
