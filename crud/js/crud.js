@@ -1,79 +1,95 @@
-// CRUD Funcionários
-const funcionarioForm = document.getElementById('funcionarioForm');
-const funcionarioTable = document.getElementById('funcionarioTable');
+// Função para mostrar a seção do CRUD correspondente
+function mostrarCRUD(crudId) {
+    const sections = document.querySelectorAll('.crud-section');
+    sections.forEach(section => section.classList.remove('active'));
 
-funcionarioForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+    const sectionToShow = document.getElementById(crudId);
+    sectionToShow.classList.add('active');
+}
 
-    const nome = document.getElementById('nome').value;
-    const cpf = document.getElementById('cpf').value;
-    const cargo = document.getElementById('cargo').value;
-    const telefone = document.getElementById('telefone').value;
+// Função para adicionar um novo item a qualquer tabela
+function adicionarItem(formId, tableId, campos) {
+    const form = document.getElementById(formId);
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();  // Impede o envio do formulário, para não recarregar a página
 
-    const row = funcionarioTable.insertRow();
-    row.innerHTML = `
-        <td>${nome}</td>
-        <td>${cpf}</td>
-        <td>${cargo}</td>
-        <td>${telefone}</td>
-        <td>
-            <button onclick="editarFuncionario(this)">Editar</button>
-            <button onclick="excluirFuncionario(this)">Excluir</button>
-        </td>
-    `;
+        // Obter os dados do formulário
+        let valores = {};
+        for (let campo in campos) {
+            valores[campo] = document.getElementById(campo).value;
+        }
 
-    funcionarioForm.reset();
+        // Criar uma nova linha para a tabela
+        const novaLinha = document.createElement("tr");
+
+        // Criar as células da linha com os dados do item
+        for (let campo in campos) {
+            const celula = document.createElement("td");
+            celula.textContent = valores[campo];
+            novaLinha.appendChild(celula);
+        }
+
+        // Criar a célula de Ações com botões Editar e Excluir
+        const celulaAcoes = document.createElement("td");
+        const btnEditar = document.createElement("button");
+        btnEditar.textContent = "Editar";
+        btnEditar.onclick = function() {
+            for (let campo in campos) {
+                document.getElementById(campo).value = valores[campo];
+            }
+            novaLinha.remove();
+        };
+
+        const btnExcluir = document.createElement("button");
+        btnExcluir.textContent = "Excluir";
+        btnExcluir.onclick = function() {
+            novaLinha.remove();
+        };
+
+        // Adicionar os botões de ação na célula
+        celulaAcoes.appendChild(btnEditar);
+        celulaAcoes.appendChild(btnExcluir);
+
+        // Adicionar a célula de ações à nova linha
+        novaLinha.appendChild(celulaAcoes);
+
+        // Adicionar a nova linha à tabela
+        document.getElementById(tableId).appendChild(novaLinha);
+
+        // Limpar os campos do formulário
+        form.reset();
+    });
+}
+
+// Adicionar CRUD Funcionários
+adicionarItem("funcionarioForm", "funcionarioTable", {
+    "nomeFuncionario": "Nome",
+    "cpfFuncionario": "CPF",
+    "cargoFuncionario": "Cargo",
+    "telefoneFuncionario": "Telefone"
 });
 
-function editarFuncionario(button) {
-    const row = button.parentNode.parentNode;
-    document.getElementById('nome').value = row.cells[0].innerText;
-    document.getElementById('cpf').value = row.cells[1].innerText;
-    document.getElementById('cargo').value = row.cells[2].innerText;
-    document.getElementById('telefone').value = row.cells[3].innerText;
-    row.remove();
-}
-
-function excluirFuncionario(button) {
-    button.parentNode.parentNode.remove();
-}
-
-// CRUD Pagamentos
-const pagamentoForm = document.getElementById('pagamentoForm');
-const pagamentoTable = document.getElementById('pagamentoTable');
-
-pagamentoForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const hospede = document.getElementById('hospede').value;
-    const dataPagamento = document.getElementById('dataPagamento').value;
-    const valorPago = document.getElementById('valorPago').value;
-    const metodoPagamento = document.getElementById('metodoPagamento').value;
-
-    const row = pagamentoTable.insertRow();
-    row.innerHTML = `
-        <td>${hospede}</td>
-        <td>${dataPagamento}</td>
-        <td>${valorPago}</td>
-        <td>${metodoPagamento}</td>
-        <td>
-            <button onclick="editarPagamento(this)">Editar</button>
-            <button onclick="excluirPagamento(this)">Excluir</button>
-        </td>
-    `;
-
-    pagamentoForm.reset();
+// Adicionar CRUD Pagamentos
+adicionarItem("pagamentoForm", "pagamentoTable", {
+    "hospedePagamento": "Nome do Hóspede",
+    "dataPagamento": "Data",
+    "valorPagamento": "Valor Pago",
+    "metodoPagamento": "Método"
 });
 
-function editarPagamento(button) {
-    const row = button.parentNode.parentNode;
-    document.getElementById('hospede').value = row.cells[0].innerText;
-    document.getElementById('dataPagamento').value = row.cells[1].innerText;
-    document.getElementById('valorPago').value = row.cells[2].innerText;
-    document.getElementById('metodoPagamento').value = row.cells[3].innerText;
-    row.remove();
-}
+// Adicionar CRUD Hóspedes
+adicionarItem("hospedesForm", "hospedesTable", {
+    "nomeHospede": "Nome",
+    "nascimentoHospede": "Nascimento",
+    "contatoHospede": "Contato",
+    "preferenciasHospede": "Preferências"
+});
 
-function excluirPagamento(button) {
-    button.parentNode.parentNode.remove();
-}
+// Adicionar CRUD Quartos
+adicionarItem("quartosForm", "quartosTable", {
+    "numeroQuarto": "Número",
+    "tipoQuarto": "Tipo",
+    "capacidadeQuarto": "Capacidade",
+    "precoQuarto": "Preço",
+    "statusQuarto": "Status"
+});
