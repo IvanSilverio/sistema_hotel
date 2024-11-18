@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Quartos</title>
+    <link rel="stylesheet" href="quartos.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Quartos</h1>
+        <form id="quartosForm">
+            <input type="text" id="numeroQuarto" placeholder="Número do Quarto" required>
+            <input type="text" id="tipoQuarto" placeholder="Tipo do Quarto" required>
+            <input type="number" id="capacidadeQuarto" placeholder="Capacidade" required>
+            <input type="number" id="precoQuarto" placeholder="Preço (R$)" required>
+            <select id="statusQuarto" required>
+                <option value="disponível">Disponível</option>
+                <option value="ocupado">Ocupado</option>
+                <option value="em manutenção">Em Manutenção</option>
+            </select>
+            <button type="submit">Adicionar Quarto</button>
+        </form>
+        <h3>Lista de Quartos</h3>
+        <table id="quartosTable">
+            <tr>
+                <th>Número</th>
+                <th>Tipo</th>
+                <th>Capacidade</th>
+                <th>Preço</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </table>
+    </div>
+    <script src="quartos.js"></script>
+</body>
+</html>
