@@ -1,0 +1,41 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# Configuração do WebDriver
+servico = Service(ChromeDriverManager().install())
+navegador = webdriver.Chrome(service=servico)
+
+# Acessando o sistema
+navegador.get('http://127.0.0.1:5500/realese02/index.html')
+time.sleep(3)  # Aguardando o carregamento inicial
+
+
+# CRUD Hóspede
+navegador.find_element(By.XPATH, '/html/body/div[1]/nav/ul/li[3]/button').click()
+time.sleep(2)
+
+navegador.find_element(By.XPATH, '//*[@id="nomeHospede"]').send_keys("Ana Pauls")
+navegador.find_element(By.XPATH, '//*[@id="nascimentoHospede"]').send_keys("1985-06-15")
+navegador.find_element(By.XPATH, '//*[@id="contatoHospede"]').send_keys("(11) 98765-4321")
+navegador.find_element(By.XPATH, '//*[@id="preferenciasHospede"]').send_keys("Andar alto")
+navegador.find_element(By.XPATH, '//*[@id="hospedesForm"]/button').click()
+time.sleep(3)
+
+navegador.find_element(By.XPATH, '//*[@id="hospedesTable"]/tr/td[5]/button[1]').click()  # Botão de editar
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="nomeHospede"]').clear()
+navegador.find_element(By.XPATH, '//*[@id="nomeHospede"]').send_keys("Ana Paula")
+navegador.find_element(By.XPATH, '//*[@id="hospedesForm"]/button').click()
+time.sleep(3)
+
+# Excluir hóspede 
+navegador.find_element(By.XPATH, '//*[@id="hospedesTable"]/tr/td[5]/button[2]').click()  # Botão de excluir
+time.sleep(3)
+
+# Fechando o navegador
+navegador.quit()
