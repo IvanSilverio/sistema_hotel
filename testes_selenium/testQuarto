@@ -1,0 +1,41 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# Configuração do WebDriver
+servico = Service(ChromeDriverManager().install())
+navegador = webdriver.Chrome(service=servico)
+
+# Acessando o sistema
+navegador.get('http://127.0.0.1:5500/realese02/index.html')
+time.sleep(3)  # Aguardando o carregamento inicial
+
+# CRUD Quarto
+navegador.find_element(By.XPATH, '/html/body/div[1]/nav/ul/li[4]/button').click()
+time.sleep(2)
+
+navegador.find_element(By.XPATH, '//*[@id="numeroQuarto"]').send_keys("102")
+navegador.find_element(By.XPATH, '//*[@id="tipoQuarto"]').send_keys("Suite Master")
+navegador.find_element(By.XPATH, '//*[@id="capacidadeQuarto"]').send_keys("4")
+navegador.find_element(By.XPATH, '//*[@id="precoQuarto"]').send_keys("450")
+navegador.find_element(By.XPATH, '//*[@id="statusQuarto"]').send_keys("Disponível")
+navegador.find_element(By.XPATH, '//*[@id="quartosForm"]/button').click()
+
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="quartosTable"]/tr/td[6]/button[1]').click()  # Botão de editar
+time.sleep(2)
+navegador.find_element(By.XPATH, '//*[@id="numeroQuarto"]').clear()
+navegador.find_element(By.XPATH, '//*[@id="numeroQuarto"]').send_keys("101")
+navegador.find_element(By.XPATH, '//*[@id="quartosForm"]/button').click()
+time.sleep(3)
+
+# Excluir Quarto
+navegador.find_element(By.XPATH, '//*[@id="quartosTable"]/tr/td[6]/button[2]').click()  # Botão de excluir
+time.sleep(3)
+
+# Fechando o navegador
+navegador.quit()
